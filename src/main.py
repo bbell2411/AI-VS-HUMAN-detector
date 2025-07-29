@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.sparse import hstack
+from sklearn.preprocessing import StandardScaler
 
 df = pd.read_csv('data/ai_human_content_detection_dataset.csv')
 
@@ -21,5 +22,9 @@ X_non_text = np.hstack([X_numeric.values, X_cat.values])
 X_full = hstack([X_non_text, X_text])
 
 y=df['label']
+
+#Scale X 
+scaler = StandardScaler(with_mean=False)  # with_mean=False for sparse matrices
+X_scaled = scaler.fit_transform(X_full)
 
 

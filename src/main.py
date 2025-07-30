@@ -11,7 +11,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import GridSearchCV
 
 
 df = pd.read_csv('data/ai_human_content_detection_dataset.csv')
@@ -38,11 +37,12 @@ X_numeric=df[['word_count', 'character_count',
        'gunning_fog_index', 'grammar_errors', 'passive_voice_ratio',
        'predictability_score', 'burstiness', 'sentiment_score']]
 #vectorise text content
-vectorizer = TfidfVectorizer(  max_features=950,  
-    ngram_range=(1, 3),  # Include bigrams and trigrams
-    min_df=2,  # Ignore very rare words
-    max_df=0.9,  # Ignore very common words
-    sublinear_tf=True,  # Apply sublinear scaling
+vectorizer = TfidfVectorizer(
+    max_features=950,  
+    ngram_range=(1, 3), 
+    min_df=2,  
+    max_df=0.9,  
+    sublinear_tf=True, 
     use_idf=True,
     smooth_idf=True
     )  
@@ -88,8 +88,8 @@ print("---------------------------------------------")
 
 
 #Scale trainig and test data
-scaler = StandardScaler(with_mean=False)  # with_mean=False for sparse matrices
-X_train_scaled = scaler.fit_transform(X_train_imputed) #fit and transform only on training data
+scaler = StandardScaler(with_mean=False)  
+X_train_scaled = scaler.fit_transform(X_train_imputed) 
 X_test_scaled= scaler.transform(X_test_imputed)
 
 
@@ -139,27 +139,4 @@ print(f"BEST SCORING MODEL: {highest_score['model']} with accuracy: {highest_sco
 
 print("-----------------------------------")
 
-# === EXPERIMENT: Optimizing LogisticRegression C parameter ===
-# After finding LogisticRegression was initially best, tested different regularization strengths
-# RESULT: Default C=1.0 was optimal for 100 features, but with 600 features, C=0.1 performed better
-# This led to discovering that more text features (600 vs 100) was more impactful than C tuning
-lr_models = {
-    'LR_C=0.1': LogisticRegression(C=0.1, random_state=42, max_iter=10000),
-    'LR_C=1.0': LogisticRegression(C=1.0, random_state=42, max_iter=10000), 
-    'LR_C=10.0': LogisticRegression(C=10.0, random_state=42, max_iter=10000),
-}
-
-for name, model in lr_models.items():
-    model.fit(X_train_scaled, y_train)
-    y_pred = model.predict(X_test_scaled)
-    accuracy = accuracy_score(y_test, y_pred)
-
-
 print(f"-----Optimising {highest_score['model']}-----")
-
-# Grid search with cross-validation and multiple C values worsened score and same with linearSVC
-# optimised second best model (lr) with best .54 lower than svm
-# optimised nbm model scored second best optimised at 5.8
-
-#only options: stick to 60% with svm AND test with only numeric values
-# use nbm model (convert to positive and try with numeric only)

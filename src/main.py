@@ -55,6 +55,13 @@ scaler = StandardScaler(with_mean=False)  # with_mean=False for sparse matrices
 X_train_scaled = scaler.fit_transform(X_train_imputed) #fit and transform only on training data
 X_test_scaled= scaler.transform(X_test_imputed)
 
+#model with scaled sparse matrices
+model_scaled=RandomForestClassifier(random_state=42)
+model_scaled.fit(X_train_scaled, y_train)
+#Evaluate model_scaled
+y_pred1 = model_scaled.predict(X_test_scaled)
+print("First model with scaling eval: ",classification_report(y_test, y_pred1))
+
 #convert sparse matrices to dense
 X_train_scaled_dense = X_train_scaled.toarray()  
 X_test_scaled_dense = X_test_scaled.toarray()
@@ -70,5 +77,7 @@ model2.fit(X_train_pca, y_train)
 
 #Evaluate model2
 y_pred2 = model2.predict(X_test_pca)
-print("Second model eval: ",classification_report(y_test, y_pred2))
+print("Second model eval (scaling and pca): ",classification_report(y_test, y_pred2))
 
+
+#improve model accuracy

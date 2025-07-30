@@ -85,8 +85,6 @@ print(f"Best RAW Model: {best_model} with accuracy: {results[best_model]:.3f}")
 print("---------------------------------------------")
 
 
-
-
 #Scale trainig and test data
 scaler = StandardScaler(with_mean=False)  
 X_train_scaled = scaler.fit_transform(X_train_imputed) 
@@ -112,7 +110,6 @@ print("")
 print(f"Best SCALED Model: {best_model} with accuracy: {results[best_model]:.3f}")
     
 print("---------------------------------------------")
-    
 
 #Apply PCA to capture 95% variance
 pca=PCA(n_components=0.95)
@@ -138,5 +135,5 @@ print("")
 print(f"BEST SCORING MODEL: {highest_score['model']} with accuracy: {highest_score['score']:.3f}")
 
 print("-----------------------------------")
-
+# fix test/train
 print(f"-----Optimising {highest_score['model']}-----")

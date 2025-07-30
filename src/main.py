@@ -11,6 +11,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report, confusion_matrix
+
 
 
 df = pd.read_csv('data/ai_human_content_detection_dataset.csv')
@@ -136,4 +138,14 @@ print(f"BEST SCORING MODEL: {highest_score['model']} with accuracy: {highest_sco
 
 print("-----------------------------------")
 
-print(f"-----Optimising {highest_score['model']}-----")
+# Final Model
+best_svm = SVC(C=1, gamma='scale', kernel='rbf')
+best_svm.fit(X_train_pca, y_train)
+y_pred_final = best_svm.predict(X_test_pca)
+
+print("Final Model Performance:")
+print(f"Accuracy: {accuracy_score(y_test, y_pred_final):.3f}")
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred_final))
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred_final))

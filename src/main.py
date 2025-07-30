@@ -135,5 +135,5 @@ print("")
 print(f"BEST SCORING MODEL: {highest_score['model']} with accuracy: {highest_score['score']:.3f}")
 
 print("-----------------------------------")
-# fix test/train
+
 print(f"-----Optimising {highest_score['model']}-----")

@@ -6,10 +6,24 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report
 from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 
 df = pd.read_csv('data/ai_human_content_detection_dataset.csv')
+
+results={}
+
+models = {
+    'RandomForest': RandomForestClassifier(random_state=42),
+    'LogisticRegression': LogisticRegression(random_state=42, max_iter=10000),
+    'SVM': SVC(random_state=42),
+    'KNN': KNeighborsClassifier(),
+#     'NaiveBayes': MultinomialNB()
+}
+
 
 #all numeric features
 X_numeric=df[['word_count', 'character_count',
@@ -42,42 +56,47 @@ imputer = SimpleImputer(strategy='mean')
 X_train_imputed = imputer.fit_transform(X_train)
 X_test_imputed = imputer.transform(X_test)
 
-#Original model withoit scaling and PCA
-model=RandomForestClassifier(random_state=42)
-model.fit(X_train_imputed, y_train)
+#Train and evaluate all models (no scaling or PCA)
+for name, model in models.items():
+    model.fit(X_train_imputed, y_train)
+    y_pred = model.predict(X_test_imputed)
+    accuracy = accuracy_score(y_test, y_pred)
+    results[name] = accuracy
+    print(f"RAW MODEL EVAL: {name}: {accuracy:.3f}")
+print("******")
 
-#Evaluate original model
-y_pred = model.predict(X_test_imputed)
-print("First model eval: ",classification_report(y_test, y_pred))
 
 #Scale trainig and test data
 scaler = StandardScaler(with_mean=False)  # with_mean=False for sparse matrices
 X_train_scaled = scaler.fit_transform(X_train_imputed) #fit and transform only on training data
 X_test_scaled= scaler.transform(X_test_imputed)
 
-#model with scaled sparse matrices
-model_scaled=RandomForestClassifier(random_state=42)
-model_scaled.fit(X_train_scaled, y_train)
-#Evaluate model_scaled
-y_pred1 = model_scaled.predict(X_test_scaled)
-print("First model with scaling eval: ",classification_report(y_test, y_pred1))
 
 #convert sparse matrices to dense
 X_train_scaled_dense = X_train_scaled.toarray()  
 X_test_scaled_dense = X_test_scaled.toarray()
+
+#Train and evaluate all models with scaled data
+for name, model in models.items():
+    model.fit(X_train_scaled_dense, y_train)
+    y_pred = model.predict(X_test_scaled_dense)
+    accuracy = accuracy_score(y_test, y_pred)
+    results[name] = accuracy
+    print(f"SCALED MODEL EVAL (DENSE): {name}: {accuracy:.3f}")
+print("******")
+    
 
 #Apply PCA to capture 95% variance
 pca=PCA(n_components=0.95)
 X_train_pca = pca.fit_transform(X_train_scaled_dense)
 X_test_pca = pca.transform(X_test_scaled_dense)
 
-#2nd Classifier model with scaled and PCA transformed data
-model2=RandomForestClassifier(random_state=42)
-model2.fit(X_train_pca, y_train)
+#Train and evaluate all models with scaled + PCA data
+for name, model in models.items():
+    model.fit(X_train_pca, y_train)
+    y_pred = model.predict(X_test_pca)
+    accuracy = accuracy_score(y_test, y_pred)
+    results[name] = accuracy
+    print(f"PCA APPLIED MODEL EVAL (DENSE): {name}: {accuracy:.3f}")
 
-#Evaluate model2
-y_pred2 = model2.predict(X_test_pca)
-print("Second model eval (scaling and pca): ",classification_report(y_test, y_pred2))
 
-
-#improve model accuracy

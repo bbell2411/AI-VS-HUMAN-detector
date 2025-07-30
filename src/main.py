@@ -11,6 +11,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import GridSearchCV
+
 
 df = pd.read_csv('data/ai_human_content_detection_dataset.csv')
 
@@ -36,7 +38,14 @@ X_numeric=df[['word_count', 'character_count',
        'gunning_fog_index', 'grammar_errors', 'passive_voice_ratio',
        'predictability_score', 'burstiness', 'sentiment_score']]
 #vectorise text content
-vectorizer = TfidfVectorizer(max_features=600)  
+vectorizer = TfidfVectorizer(  max_features=950,  
+    ngram_range=(1, 3),  # Include bigrams and trigrams
+    min_df=2,  # Ignore very rare words
+    max_df=0.9,  # Ignore very common words
+    sublinear_tf=True,  # Apply sublinear scaling
+    use_idf=True,
+    smooth_idf=True
+    )  
 X_text = vectorizer.fit_transform(df['text_content'])  
 #encode cat features to numeric
 X_cat = pd.get_dummies(df['content_type'], drop_first=True)
@@ -144,9 +153,13 @@ for name, model in lr_models.items():
     model.fit(X_train_scaled, y_train)
     y_pred = model.predict(X_test_scaled)
     accuracy = accuracy_score(y_test, y_pred)
-    print(f"{name}: {accuracy:.3f}")
 
 
-#improve model accuracy
-#improve best model with hyperparameter tuning
-#imrpove best model with parameter tuning?
+print(f"-----Optimising {highest_score['model']}-----")
+
+# Grid search with cross-validation and multiple C values worsened score and same with linearSVC
+# optimised second best model (lr) with best .54 lower than svm
+# optimised nbm model scored second best optimised at 5.8
+
+#only options: stick to 60% with svm AND test with only numeric values
+# use nbm model (convert to positive and try with numeric only)

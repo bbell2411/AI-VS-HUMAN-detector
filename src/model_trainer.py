@@ -8,9 +8,12 @@ from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report, confusion_matrix
+import logging
 import joblib 
 
 def train_and_eval(X_full,y):
+    logger = logging.getLogger(__name__)
+
     results={}
 
     highest_score={
@@ -43,14 +46,14 @@ def train_and_eval(X_full,y):
         y_pred = model.predict(X_test_imputed)
         accuracy = accuracy_score(y_test, y_pred)
         results[name] = accuracy
-        print(f"RAW MODEL EVAL: {name}: {accuracy:.3f}")
+        logger.info(f"RAW MODEL EVAL: {name}: {accuracy:.3f}")
     best_model = max(results, key=results.get)
     if results[best_model] > highest_score["score"]:
         highest_score["score"] = results[best_model]
         highest_score["model"] = best_model
-    print("")
-    print(f"Best RAW Model: {best_model} with accuracy: {results[best_model]:.3f}")
-    print("---------------------------------------------")
+    logger.info("")
+    logger.info(f"Best RAW Model: {best_model} with accuracy: {results[best_model]:.3f}")
+    logger.info("---------------------------------------------")
     #Scale trainig and test data
     scaler = StandardScaler(with_mean=False)  
     X_train_scaled = scaler.fit_transform(X_train_imputed) 
@@ -66,15 +69,15 @@ def train_and_eval(X_full,y):
         y_pred = model.predict(X_test_scaled_dense)
         accuracy = accuracy_score(y_test, y_pred)
         results[name] = accuracy
-        print(f"SCALED MODEL EVAL (DENSE): {name}: {accuracy:.3f}")
+        logger.info(f"SCALED MODEL EVAL (DENSE): {name}: {accuracy:.3f}")
     best_model = max(results, key=results.get)
     if results[best_model] > highest_score["score"]:
         highest_score["score"] = results[best_model]
         highest_score["model"] = best_model
-    print("")
-    print(f"Best SCALED Model: {best_model} with accuracy: {results[best_model]:.3f}")
+    logger.info("")
+    logger.info(f"Best SCALED Model: {best_model} with accuracy: {results[best_model]:.3f}")
         
-    print("---------------------------------------------")
+    logger.info("---------------------------------------------")
     
     
 #Apply PCA to capture 95% variance
@@ -88,32 +91,32 @@ def train_and_eval(X_full,y):
         y_pred = model.predict(X_test_pca)
         accuracy = accuracy_score(y_test, y_pred)
         results[name] = accuracy
-        print(f"PCA APPLIED MODEL EVAL {name}: {accuracy:.3f}")
+        logger.info(f"PCA APPLIED MODEL EVAL {name}: {accuracy:.3f}")
     if results[best_model] > highest_score["score"]:
         highest_score["score"] = results[best_model]
         highest_score["model"] = best_model
     best_model = max(results, key=results.get)
-    print("")
-    print(f"Best PCA Model: {best_model} with accuracy: {results[best_model]:.3f}")
-    print("")
-    print("----------------------------------OVERALL RESULTS-----------------------------------")
-    print("")
-    print(f"BEST SCORING MODEL: {highest_score['model']} with accuracy: {highest_score['score']:.3f}")
-    print("-----------------------------------")
+    logger.info("")
+    logger.info(f"Best PCA Model: {best_model} with accuracy: {results[best_model]:.3f}")
+    logger.info("")
+    logger.info("----------------------------------OVERALL RESULTS-----------------------------------")
+    logger.info("")
+    logger.info(f"BEST SCORING MODEL: {highest_score['model']} with accuracy: {highest_score['score']:.3f}")
+    logger.info("-----------------------------------")
     # Final Model
     best_svm = SVC(C=1, gamma='scale', kernel='rbf')
     best_svm.fit(X_train_pca, y_train)
     y_pred_final = best_svm.predict(X_test_pca)
 
-    print("Final Model Performance:")
-    print(f"Accuracy: {accuracy_score(y_test, y_pred_final):.3f}")
-    print("\nClassification Report:")
-    print(classification_report(y_test, y_pred_final))
-    print("\nConfusion Matrix:")
-    print(confusion_matrix(y_test, y_pred_final))
+    logger.info("Final Model Performance:")
+    logger.info(f"Accuracy: {accuracy_score(y_test, y_pred_final):.3f}")
+    logger.info("\nClassification Report:")
+    logger.info(classification_report(y_test, y_pred_final))
+    logger.info("\nConfusion Matrix:")
+    logger.info(confusion_matrix(y_test, y_pred_final))
     
     
     model_path = 'models/svm_pca_model.joblib'
     joblib.dump(best_svm, model_path)
-    print(f"\nFinal model saved to {model_path}")
+    logger.info(f"\nFinal model saved to {model_path}")
     

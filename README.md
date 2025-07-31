@@ -6,6 +6,19 @@ A machine learning project that classifies text as AI-generated or human-written
 
 This project explores the challenging task of detecting AI-generated text vs human-written content. Through systematic experimentation with multiple algorithms and preprocessing techniques, I achieved 60.2% accuracy using an SVM model with PCA dimensionality reduction.
 
+## 📊 Dataset
+
+This project uses the **AI vs Human Content Detection Dataset** from Kaggle, which contains labeled examples of AI-generated and human-written text across various content types.
+
+- **Source**: [Kaggle - AI vs Human Content Detection](https://www.kaggle.com/datasets/pratyushpuri/ai-vs-human-content-detection-1000-record-in-2025)
+- **Author**: Pratyush Puri
+- **License**: Apache 2.0
+- **Size**: 1,367 samples (estimated)
+- **Features**: 17 columns including text content, linguistic metrics, readability scores
+- **Labels**: Binary classification (AI vs Human)
+
+*Dataset used under Apache 2.0 license terms for educational and research purposes.*
+
 ## 🛠️ Tech-stack
 - Python 3.8+
 - Scikit-learn: Machine learning algorithms and preprocessing
@@ -48,18 +61,29 @@ pip install -r requirements.txt
 ```
 
 ## Usage
-python main.py
+```bash
+python3 main.py
+```
 
 ## 📁 Project Structure
 ai-text-detector/
-├── main.py                 # Main execution script
+
+├── main.py       # Main execution script
+
 ├── src/
+
 │   ├── data_loader.py      # Data loading
+
 │   ├── feature_engineering.py  # Feature extraction
+
 │   ├── model_trainer.py    # Model training and evaluation
+
 │   └── logger_config.py    # Logging configuration
+
 ├── data/                   # Dataset directory
+
 ├── models/                 # Saved models
+
 └── requirements.txt        # Dependencies
 
 ## 🔍 Key Insights

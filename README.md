@@ -64,28 +64,6 @@ pip install -r requirements.txt
 ```bash
 python3 main.py
 ```
-
-## 📁 Project Structure
-ai-text-detector/
-
-├── main.py       # Main execution script
-
-├── src/
-
-│   ├── data_loader.py      # Data loading
-
-│   ├── feature_engineering.py  # Feature extraction
-
-│   ├── model_trainer.py    # Model training and evaluation
-
-│   └── logger_config.py    # Logging configuration
-
-├── data/                   # Dataset directory
-
-├── models/                 # Saved models
-
-└── requirements.txt        # Dependencies
-
 ## 🔍 Key Insights
 - Challenge Complexity: AI text detection is inherently difficult, even for humans
 - Feature Importance: Combination of linguistic and stylistic features proved most effective

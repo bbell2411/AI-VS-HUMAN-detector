@@ -6,6 +6,14 @@ A machine learning project that classifies text as AI-generated or human-written
 
 This project explores the challenging task of detecting AI-generated text vs human-written content. Through systematic experimentation with multiple algorithms and preprocessing techniques, I achieved 60.2% accuracy using an SVM model with PCA dimensionality reduction.
 
+## 🛠️ Tech-stack
+- Python 3.8+
+- Scikit-learn: Machine learning algorithms and preprocessing
+- Pandas: Data manipulation and analysis
+- NumPy: Numerical computing
+- SciPy: Sparse matrix operations
+
+
 ## 📊 Results
 
 - **Best Model**: Support Vector Machine (SVM) with PCA
@@ -34,6 +42,34 @@ This project explores the challenging task of detecting AI-generated text vs hum
 
 ### Installation
 ```bash
-git clone [your-repo-url]
+git clone [https://github.com/bbell2411/AI-VS-HUMAN-detector.git]
 cd ai-text-detector
 pip install -r requirements.txt
+```
+
+## Usage
+python main.py
+
+## 📁 Project Structure
+ai-text-detector/
+├── main.py                 # Main execution script
+├── src/
+│   ├── data_loader.py      # Data loading
+│   ├── feature_engineering.py  # Feature extraction
+│   ├── model_trainer.py    # Model training and evaluation
+│   └── logger_config.py    # Logging configuration
+├── data/                   # Dataset directory
+├── models/                 # Saved models
+└── requirements.txt        # Dependencies
+
+## 🔍 Key Insights
+- Challenge Complexity: AI text detection is inherently difficult, even for humans
+- Feature Importance: Combination of linguistic and stylistic features proved most effective
+- Model Selection: SVM with proper preprocessing outperformed ensemble methods
+- Balanced Performance: Model achieved equal performance on both AI and human text
+
+## 📈 Future Improvements
+- Experiment with deep learning approaches (BERT, RoBERTa)
+- Collect more diverse training data
+- Implement ensemble methods
+

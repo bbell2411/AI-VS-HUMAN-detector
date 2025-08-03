@@ -1,4 +1,3 @@
-import pytest
 def test_health_endpoint(client):
     """Test health endpoint returns correct response"""
     response = client.get("/api/v1/health")

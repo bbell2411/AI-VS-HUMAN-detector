@@ -11,7 +11,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 import logging
 import joblib 
 
-def train_and_eval(X_full,y):
+def train_and_eval(X_full,y, vectorizer):
     logger = logging.getLogger(__name__)
 
     results={}
@@ -119,4 +119,15 @@ def train_and_eval(X_full,y):
     model_path = 'models/svm_pca_model.joblib'
     joblib.dump(best_svm, model_path)
     logger.info(f"\nFinal model saved to {model_path}")
+    
+    # Save ALL the preprocessing components
+    joblib.dump(imputer, 'models/imputer.joblib')
+    joblib.dump(scaler, 'models/scaler.joblib') 
+    joblib.dump(pca, 'models/pca.joblib')
+    joblib.dump(vectorizer, 'models/vectorizer.joblib')
+
+
+
+    logger.info("All preprocessing components saved!")
+    
     

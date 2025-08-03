@@ -16,8 +16,8 @@ if __name__ == "__main__":
 
 df = load_data(DATA_PATH)
 
-X_full,y=create_features(df)
+X_full,y,vectorizer=create_features(df)
 
-train_and_eval(X_full, y)
+train_and_eval(X_full, y,vectorizer)
 logger.info("\n--- Pipeline Finished ---")
 

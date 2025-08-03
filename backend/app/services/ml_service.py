@@ -86,9 +86,9 @@ class MLService:
         raw_result = prediction[0]  
         
         if raw_result == 0:
-            result = "human_written"
-        elif raw_result == 1:
             result = "ai_generated"
+        elif raw_result == 1:
+            result = "human_written"
         
         processing_time = (time.time() - start_time) * 1000
         

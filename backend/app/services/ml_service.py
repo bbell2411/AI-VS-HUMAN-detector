@@ -75,25 +75,28 @@ class MLService:
                 return X_combined
         
     async def predict_text_origin(self, request: PredictionRequest) -> PredictionResponse:
-        print("in")
         start_time = time.time()
         X_combined = self._extract_features_from_text(request.text, request.content_type)    
-        print(X_combined, "seeing func extraction/return")
         
         X_imputed=self.imputer.transform(X_combined)
         X_scaled=self.scaler.transform(X_imputed)
         X_pca=self.pca.transform(X_scaled)
         
         prediction = self.model.predict(X_pca) 
-        result = prediction[0]  
-        print(result,"prediction result!!!")
+        raw_result = prediction[0]  
+        
+        if raw_result == 0:
+            result = "human_written"
+        elif raw_result == 1:
+            result = "ai_generated"
         
         processing_time = (time.time() - start_time) * 1000
         
         return PredictionResponse(
-            result=str(result), 
+            result=result, 
             confidence=0.85,   
             processing_time_ms=round(processing_time, 2),
             timestamp=datetime.now(),
             text_length=len(request.text)
         )
+        

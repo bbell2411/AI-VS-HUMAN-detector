@@ -40,3 +40,4 @@ async def test_different_content_types():
     
     assert result.result is not None
     print(f"Academic paper predicted: {result.result}")
+    

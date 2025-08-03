@@ -23,13 +23,14 @@ def create_features(df):
     use_idf=True,
     smooth_idf=True
     )  
-    X_text = vectorizer.fit_transform(df['text_content'])  
+    X_text = vectorizer.fit_transform(df['text_content'])
     
 #encode cat features to numeric
     X_cat = pd.get_dummies(df['content_type'], drop_first=True)
+
 #combine all features into a single matrix (np.hstack for dense arrays, hstack for sparse matrices)
     X_non_text = np.hstack([X_numeric.values, X_cat.values])
     X_full = hstack([X_non_text, X_text])
 
     y=df['label']
-    return X_full, y
+    return X_full, y, vectorizer

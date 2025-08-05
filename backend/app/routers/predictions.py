@@ -28,3 +28,4 @@ async def predict_text_origin(request: PredictionRequest) ->PredictionResponse:
             detail=f"prediction failed: {str(e)}"
             )
        
+       

@@ -11,7 +11,6 @@ app = FastAPI(
 
 app.include_router(health.router, prefix=settings.API_V1_STR, tags=["health"])
 app.include_router(predictions.router, prefix=settings.API_V1_STR, tags=["predictions"])
-
 @app.get("/")
 def read_root():
     return {"message": "ML Text Detector API", "status": "running"}

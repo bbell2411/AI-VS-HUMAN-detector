@@ -26,3 +26,4 @@ async def predict_text_origin(request: PredictionRequest) ->PredictionResponse:
             status_code= status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"prediction failed: {str(e)}"
             )
+        

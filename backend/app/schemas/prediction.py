@@ -31,3 +31,9 @@ class ModelInfo(BaseModel):
     status: str
     accuracy: str
     features: List[str]
+
+class ModelInfoResponse(BaseModel):
+    models: Dict[str, ModelInfo]              
+    supported_content_types: List[str]     
+    max_text_length: int                      
+    min_text_length: int 

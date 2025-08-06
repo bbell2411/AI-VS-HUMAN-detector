@@ -19,6 +19,8 @@ async def predict_text_origin(request: PredictionRequest) ->PredictionResponse:
 
     if len(request.text.strip()) < 10:
         raise HTTPException(status_code=400, detail="Text must be at least 10 characters long")
+    if len(request.text) >10000:
+       raise HTTPException(status_code=422, detail="Text is too long")
     try:
         result= await ml_service.predict_text_origin(request)
         return result

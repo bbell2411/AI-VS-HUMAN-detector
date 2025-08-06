@@ -1,4 +1,3 @@
-import pytest
 from fastapi.testclient import TestClient
 from app.main import app
 from app.config import settings
@@ -33,6 +32,15 @@ class TestPredictionsRouter:
         assert response.status_code==400
         assert response.json()["detail"]== "Text must be at least 10 characters long"
     
+    def test_text_too_long(self):
+        """Test to see error display if text is too long"""
+        payload={
+            "text":"n"*10001,
+            "content_type": "essay"
+        }
+        response = client.post(f"{settings.API_V1_STR}/predictions/", json=payload)
+        assert response.status_code==422
+        
     def test_if_value_is_valid(self):
         """Test to see error display if content types in post request is valid"""
         payload={

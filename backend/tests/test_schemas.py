@@ -72,4 +72,3 @@ def test_model_info_response():
     assert model_res.supported_content_types==["essay", "article"]
     assert model_res.min_text_length == 1       
     assert model_res.max_text_length == 10000
-# fix test! :)

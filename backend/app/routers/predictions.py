@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
-from fastapi.responses import JSONResponse
 
-from app.schemas.prediction import PredictionRequest, PredictionResponse
+from app.schemas.prediction import PredictionRequest, PredictionResponse,ContentType, ModelInfoResponse, ModelInfo
 from app.services.ml_service import MLService
 
 ml_service = MLService()
@@ -29,5 +28,27 @@ async def predict_text_origin(request: PredictionRequest) ->PredictionResponse:
             status_code= status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"prediction failed: {str(e)}"
             )
+@router.get(
+    "/predictions/models/info",
+    response_model=ModelInfoResponse,
+    summary="Gets model information",
+    description="Get information about the ML models currently loaded."
+)
+async def get_model_info() -> ModelInfoResponse:
+    """Gets information about loaded model and their capabilities"""
+    model_info = ModelInfo(
+        name="SVM + PCA AI Text Detector",
+        version="1.0.0",
+        status="loaded" if ml_service.model is not None else "not_loaded",
+        accuracy="60%",
+        features=["TF-IDF", "linguistic_features", "content_type", "PCA"]
+    )
+    return ModelInfoResponse(
+        models={"text_classifier":model_info},
+        supported_content_types=[c.value for c in ContentType],
+        max_text_length=10000,
+        min_text_length=1
+    )
+    
        
        

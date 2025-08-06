@@ -1,4 +1,4 @@
-from app.schemas.prediction import PredictionRequest, PredictionResponse, ContentType, ModelInfo
+from app.schemas.prediction import PredictionRequest, PredictionResponse, ContentType, ModelInfo, ModelInfoResponse
 from datetime import datetime
 
 def test_content_type_enum():
@@ -52,3 +52,24 @@ def test_model_info_request():
     assert model_info.version == "1.0.0"
     assert len(model_info.features) == 2
     
+def test_model_info_response():
+    """Test the model info response schema"""
+    model_info = ModelInfo(
+        name="Test Model",
+        version="1.0.0", 
+        status="loaded",
+        accuracy="85%",
+        features=["TF-IDF", "linguistic"]
+    )
+    model_res=ModelInfoResponse(
+        models={"text_classifier": model_info}, 
+        supported_content_types=["essay", "article"],  
+        max_text_length=10000,                         
+        min_text_length=1  
+    )
+    assert "text_classifier" in model_res.models
+    assert model_res.models["text_classifier"].name=="Test Model"
+    assert model_res.supported_content_types==["essay", "article"]
+    assert model_res.min_text_length == 1       
+    assert model_res.max_text_length == 10000
+# fix test! :)

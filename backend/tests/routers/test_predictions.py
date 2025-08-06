@@ -56,3 +56,14 @@ class TestPredictionsRouter:
         }
         response = client.post(f"{settings.API_V1_STR}/predictions/", json=payload)
         assert response.status_code==422
+        
+    def test_model_info_get_request(self):
+        """Test to check for correct response for model info get request"""
+        response=client.get(f"{settings.API_V1_STR}/predictions/models/info")
+        data=response.json()
+        print(data,"here")
+        assert "models" in data and "models" 
+        assert "supported_content_types" in data 
+        assert data["max_text_length"]==10000
+        assert data["min_text_length"]==1
+        

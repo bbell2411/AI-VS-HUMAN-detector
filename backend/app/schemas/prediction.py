@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import List, Dict, Any
 from datetime import datetime
 from enum import Enum
 
@@ -24,3 +24,10 @@ class PredictionResponse(BaseModel):
     processing_time_ms: float
     timestamp: datetime
     text_length: int
+    
+class ModelInfo(BaseModel):
+    name: str
+    version: str
+    status: str
+    accuracy: str
+    features: List[str]

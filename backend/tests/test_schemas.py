@@ -1,4 +1,4 @@
-from app.schemas.prediction import PredictionRequest, PredictionResponse, ContentType
+from app.schemas.prediction import PredictionRequest, PredictionResponse, ContentType, ModelInfo
 from datetime import datetime
 
 def test_content_type_enum():
@@ -39,3 +39,16 @@ def test_prediction_response():
     )
     assert response.result == "human_written"
     assert response.confidence == 0.85
+    
+def test_model_info_request():
+    """Test the model info schema"""
+    model_info=ModelInfo(
+        name="Test Model",
+        version="1.0.0", 
+        status="loaded",
+        accuracy="85%",
+        features=["TF-IDF", "linguistic"])
+    assert model_info.name == "Test Model"
+    assert model_info.version == "1.0.0"
+    assert len(model_info.features) == 2
+    

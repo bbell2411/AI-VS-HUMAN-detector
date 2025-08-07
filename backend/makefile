@@ -24,3 +24,7 @@ install:
 clean:
 	find . -type d -name "__pycache__" -delete
 	find . -name "*.pyc" -delete
+setup-dbs:
+	PYTHONPATH= python -m app.setup_dbs 
+test-db:
+	pytest tests/test_db_setup.py -v -s

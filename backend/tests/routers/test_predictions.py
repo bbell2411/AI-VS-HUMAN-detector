@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 from app.main import app
 from app.config import settings
+
 client=TestClient(app)
 
 class TestPredictionsRouter:
@@ -61,9 +62,19 @@ class TestPredictionsRouter:
         """Test to check for correct response for model info get request"""
         response=client.get(f"{settings.API_V1_STR}/predictions/models/info")
         data=response.json()
-        print(data,"here")
+        assert response.status_code==200
         assert "models" in data and "models" 
         assert "supported_content_types" in data 
         assert data["max_text_length"]==10000
         assert data["min_text_length"]==1
         
+    def test_model_info_err_handling(self):
+        """Test to display error for when model hasnt loaded or is unavailable"""
+        from unittest.mock import patch
+        with patch('app.routers.predictions.ml_service') as mock_ml_service:
+            mock_ml_service.model = None 
+            
+            response=client.get(f"{settings.API_V1_STR}/predictions/models/info")
+            data=response.json()
+        assert response.status_code==503
+        assert "Model not loaded" in data["detail"]

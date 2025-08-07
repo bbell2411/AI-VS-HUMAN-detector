@@ -36,19 +36,30 @@ async def predict_text_origin(request: PredictionRequest) ->PredictionResponse:
 )
 async def get_model_info() -> ModelInfoResponse:
     """Gets information about loaded model and their capabilities"""
-    model_info = ModelInfo(
+    if ml_service.model == None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Model not loaded, service currently unavailable"
+                )
+    try:
+        model_info = ModelInfo(
         name="SVM + PCA AI Text Detector",
         version="1.0.0",
         status="loaded" if ml_service.model is not None else "not_loaded",
         accuracy="60%",
         features=["TF-IDF", "linguistic_features", "content_type", "PCA"]
     )
-    return ModelInfoResponse(
+        return ModelInfoResponse(
         models={"text_classifier":model_info},
         supported_content_types=[c.value for c in ContentType],
         max_text_length=10000,
         min_text_length=1
     )
-    
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get model info: {str(e)}"
+        )
+    # and continue with psql and sqlalchemy
        
        

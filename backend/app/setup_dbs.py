@@ -6,3 +6,8 @@ def setup_database():
 
 if __name__ == "__main__":
     setup_database()
+    
+
+#another table and columns for model_info 
+#tests!
+#schema or this func? same thing or?

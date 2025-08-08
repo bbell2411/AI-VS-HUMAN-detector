@@ -14,3 +14,13 @@ class PredictionRecord(Base):
     processing_time_ms = Column(Float, nullable=False)
     text_length = Column(Integer, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    
+class ModelInfoRecord(Base):
+    """Database table for storing model information"""
+    __tablename__="model_info"
+    id=Column(Integer,primary_key=True, index=True)
+    name=Column(String(100), nullable=False)
+    version=Column(String(100), nullable=False)
+    status=Column(String(100),nullable=False)
+    accuracy=Column(String(10),nullable=False)
+    features=Column(Text, nullable=False) 

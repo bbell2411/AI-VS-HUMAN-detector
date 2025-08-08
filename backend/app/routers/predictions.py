@@ -60,6 +60,6 @@ async def get_model_info() -> ModelInfoResponse:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get model info: {str(e)}"
         )
-    # and continue with psql and sqlalchemy
+ 
        
        

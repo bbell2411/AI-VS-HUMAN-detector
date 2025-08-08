@@ -5,7 +5,14 @@ from app.setup_dbs import setup_database
 from app.config import settings
 from app.database import engine
 
+
 class TestDatabaseSetup:
+    
+    def test_which_database(self):
+        """Debug: confirm we're using test database."""
+        print(f"Using database: {settings.DATABASE_URL}")
+        assert "test" in settings.DATABASE_URL
+    
     def test_table_creation(self):
         """Test that setup_database actually creates the predictions table."""
         setup_database()
@@ -42,5 +49,8 @@ class TestDatabaseSetup:
         column_names = [col['name'] for col in columns]
         for expected_col in expected_columns:
             assert expected_col in column_names
+            
+    
+    
     
     

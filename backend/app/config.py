@@ -1,22 +1,24 @@
 from pydantic_settings import BaseSettings
 from typing import Optional
+import os
+import sys
 
 class Settings(BaseSettings):
-    # Database
-    DATABASE_URL: str
+    DATABASE_URL: str = (
+        "postgresql://postgres@localhost:5432/ml_detector_test" 
+        if "pytest" in sys.modules or "PYTEST_CURRENT_TEST" in os.environ
+        else "postgresql://postgres@localhost:5432/ml_detector"
+    )
     
-    # API
     API_V1_STR: str = "/api/v1"
     PROJECT_NAME: str = "ML Text Detector"
     
-    # ML Model
     MODEL_PATH: str = "./ml_models/trained_model.pkl"
     
-    # Environment
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
     
-    class Config:
+class Config:
         env_file = ".env"
 
 settings = Settings()

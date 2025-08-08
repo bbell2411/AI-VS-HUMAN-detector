@@ -1,16 +1,19 @@
 .PHONY: test test-watch test-quiet dev install clean
 
-# Run tests with clean output
 test:
-	PYTHONPATH=. pytest -v --asyncio-mode=auto --disable-warnings
+	DATABASE_URL="postgresql://postgres@localhost:5432/ml_detector_test" pytest --disable-warnings -v
 
-# Run tests quietly (just pass/fail)
 test-quiet:
-	PYTHONPATH=. pytest -q --asyncio-mode=auto --disable-warnings
+	DATABASE_URL="postgresql://postgres@localhost:5432/ml_detector_test" pytest --disable-warnings -q
+	
+setup-dbs:
+	PYTHONPATH=. python -m app.setup_dbs 
 
-# Run tests and watch for changes
-test-watch:
-	PYTHONPATH=. pytest -v --maxfail=1 -x --asyncio-mode=auto --disable-warnings
+setup-test-dbs:
+	DATABASE_URL="postgresql://postgres@localhost:5432/ml_detector_test" PYTHONPATH=. python -m app.setup_dbs
+
+test-db:
+	DATABASE_URL="postgresql://postgres@localhost:5432/ml_detector_test" pytest tests/test_db_setup.py -v -s
 
 # Start development server
 dev:
@@ -24,7 +27,3 @@ install:
 clean:
 	find . -type d -name "__pycache__" -delete
 	find . -name "*.pyc" -delete
-setup-dbs:
-	PYTHONPATH= python -m app.setup_dbs 
-test-db:
-	pytest tests/test_db_setup.py -v -s

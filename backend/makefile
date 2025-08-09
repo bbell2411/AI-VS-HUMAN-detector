@@ -7,7 +7,7 @@ test-quiet:
 	DATABASE_URL="postgresql://postgres@localhost:5432/ml_detector_test" pytest --disable-warnings -q
 	
 setup-dbs:
-	PYTHONPATH=. python -m app.setup_dbs 
+	DATABASE_URL="postgresql://postgres@localhost:5432/ml_detector" PYTHONPATH=. python -m app.setup_dbs 
 
 setup-test-dbs:
 	DATABASE_URL="postgresql://postgres@localhost:5432/ml_detector_test" PYTHONPATH=. python -m app.setup_dbs

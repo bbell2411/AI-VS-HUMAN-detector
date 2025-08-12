@@ -15,7 +15,6 @@ class TestPredictionsRouter:
         }
         response = client.post(f"{settings.API_V1_STR}/predictions/", json=payload)
         data = response.json()
-        print(data)
         assert "result" in data
         assert "timestamp" in data
         assert "processing_time_ms" in data

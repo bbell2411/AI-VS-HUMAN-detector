@@ -90,7 +90,7 @@ class TestPredictionsRouter:
             assert response.status_code==200
             
         
-        response=client.get("/predictions/")
+        response=client.get(f"{settings.API_V1_STR}/predictions/")
         data=response.json()
         assert response.status_code==200
         assert isinstance(data, list)

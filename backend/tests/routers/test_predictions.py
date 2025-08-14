@@ -77,3 +77,27 @@ class TestPredictionsRouter:
             data=response.json()
         assert response.status_code==503
         assert "Model not loaded" in data["detail"]
+        
+    def test_get_all_predictions(self):
+        """Test to ensure all predictions are being returned"""
+        test_data = [
+            {"text": "Test prediction 1", "content_type": "essay"},
+            {"text": "Test prediction 2", "content_type": "article"},
+            {"text": "Test prediction 3", "content_type": "blog_post"}
+        ]
+        for data in test_data:
+            response=client.post(f"{settings.API_V1_STR}/predictions/",json=data)
+            assert response.status_code==200
+            
+        
+        response=client.get("/predictions/")
+        data=response.json()
+        assert response.status_code==200
+        assert isinstance(data, list)
+        assert len(data) >= 3
+        
+        if len(data) > 0:
+            first_pred = data[0]
+            required_fields = ["result", "confidence", "processing_time_ms", "timestamp", "text_length"]
+            for field in required_fields:
+                assert field in first_pred

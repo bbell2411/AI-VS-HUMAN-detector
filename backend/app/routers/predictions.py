@@ -78,6 +78,41 @@ async def get_model_info() -> ModelInfoResponse:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get model info: {str(e)}"
         )
- 
+@router.get(
+    "/predictions/",
+    response_model=list[PredictionResponse],
+    summary="Get all predictions",
+    description="Retrieve all prediction records from the database."
+) 
+async def get_predictions(db:Session=Depends(get_db)):
+    """Retrieve all predictions"""
+    try:
+        db_predictions=db.query(PredictionRecord).all()
+        predictions=[]
+        for pred in db_predictions:
+            response=PredictionResponse(
+                result= pred.prediction_result,
+                confidence= pred.confidence_score,
+                processing_time_ms=pred.processing_time_ms,
+                timestamp=pred.created_at,
+                text_length=pred.text_length
+            )    
+            predictions.append(response)
+        return predictions
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to retrieve predictions: {str(e)}"
+        )
+        
+    
+
+# @router.get("/predictions/{id}")
+# @router.delete("/predictions/{id}") 
+
+#2
+#Docker Containerization 
+# FROM python:3.13-slim
+
        
        

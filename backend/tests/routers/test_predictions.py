@@ -101,3 +101,40 @@ class TestPredictionsRouter:
             required_fields = ["result", "confidence", "processing_time_ms", "timestamp", "text_length"]
             for field in required_fields:
                 assert field in first_pred
+             
+    
+    def test_get_all_data_returns_correct_result(self):
+        """Tests get returns correct metadata"""
+        
+        payload = {
+            "text": "Known test text for verification",
+            "content_type": "essay"
+        }
+        
+        post_res=client.post(f"{settings.API_V1_STR}/predictions/", json=payload)
+        assert post_res.status_code==200
+        post_data=post_res.json()
+        
+        get_res=client.get(f"{settings.API_V1_STR}/predictions/")
+        assert get_res.status_code==200
+        get_data=get_res.json()
+        
+        end_res=None
+        
+        for pred in get_data:
+            if pred["text_length"] == len(payload["text"]):
+                end_res=pred
+                break
+            
+        assert end_res is not None
+        assert end_res["confidence"]== post_data["confidence"]
+        assert end_res["result"]== post_data["result"]
+    
+    def test_get_all_predictions_empty_database(self):
+        """Test GET when non predictions exist"""
+        
+        response=client.get(f"{settings.API_V1_STR}/predictions/")
+        assert response.status_code==200
+        data= response.json()
+        assert isinstance(data,list)
+        assert len(data)==0

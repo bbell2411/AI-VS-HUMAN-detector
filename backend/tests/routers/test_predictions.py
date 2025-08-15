@@ -1,6 +1,9 @@
 from fastapi.testclient import TestClient
 from app.main import app
 from app.config import settings
+from app.database import SessionLocal
+from app.models.prediction import PredictionRecord
+
 
 client=TestClient(app)
 
@@ -138,3 +141,23 @@ class TestPredictionsRouter:
         data= response.json()
         assert isinstance(data,list)
         assert len(data)==0
+    def test_get_prediction_by_id(self):
+        """Test to get prediction by it's ID"""
+        payload = {
+        "text": "Test text for ID retrieval",
+        "content_type": "essay"
+    }
+        post_response=client.post(f"{settings.API_V1_STR}/predictions/",json=payload)
+        assert post_response.status_code==200
+                
+        response = client.get(f"{settings.API_V1_STR}/predictions/1")
+        assert response.status_code==200
+        data = response.json()
+        
+        required_fields = ["result", "confidence", "processing_time_ms", "timestamp", "text_length"]
+        for field in required_fields:
+            assert field in data
+            
+        assert data["text_length"] == len(payload["text"])
+
+                

@@ -108,8 +108,38 @@ async def get_predictions(db:Session=Depends(get_db)):
         )
         
     
-
-# @router.get("/predictions/{id}")
+@router.get(
+    "/predictions/{id}",
+    response_model=PredictionResponse,
+    summary="get prediction by id",
+    description="Retrieve a specific prediction record by its ID."
+)
+async def get_prediction_by_id(id:int, db:Session=Depends(get_db)):
+    """Get prediction by it's specific ID"""
+    try:
+        db_pred=db.query(PredictionRecord).filter(
+            id==PredictionRecord.id
+        ).first()
+        
+        if not db_pred:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Prediction with id {id} not found."
+            )
+        response=PredictionResponse(
+            result=db_pred.prediction_result,
+            confidence=db_pred.confidence_score,
+            processing_time_ms=db_pred.processing_time_ms,
+            timestamp=db_pred.created_at,
+            text_length=db_pred.text_length
+        )
+        return response
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to retrieve prediction: {str(e)}"
+        )
+    
 # @router.delete("/predictions/{id}") 
 
 #2

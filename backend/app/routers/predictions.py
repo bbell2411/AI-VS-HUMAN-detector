@@ -88,6 +88,8 @@ async def get_predictions(db:Session=Depends(get_db)):
     """Retrieve all predictions"""
     try:
         db_predictions=db.query(PredictionRecord).all()
+        if not db_predictions:
+            return [] 
         predictions=[]
         for pred in db_predictions:
             response=PredictionResponse(

@@ -1,8 +1,7 @@
 from fastapi.testclient import TestClient
 from app.main import app
 from app.config import settings
-from app.database import SessionLocal
-from app.models.prediction import PredictionRecord
+
 
 
 client=TestClient(app)
@@ -177,3 +176,35 @@ class TestPredictionsRouter:
         """Test for negative ID returns 400."""
         response = client.get(f"{settings.API_V1_STR}/predictions/-1")
         assert response.status_code == 400
+    
+    def test_delete_prediction_by_id(self):
+        """Test that ensures prediction is deleted successfully"""
+        test_data = [
+            {"text": "Test prediction 1", "content_type": "essay"},
+            {"text": "Test prediction 2", "content_type": "article"},
+            {"text": "Test prediction 3", "content_type": "blog_post"}
+        ]
+        for data in test_data:
+            response=client.post(f"{settings.API_V1_STR}/predictions/",json=data)
+            assert response.status_code==200
+        
+        delete_response=client.delete(f"{settings.API_V1_STR}/predictions/2")
+        assert delete_response.status_code==204
+        
+        get_response=client.get(f"{settings.API_V1_STR}/predictions/")
+        assert get_response.status_code==200
+        get_data=get_response.json()
+        assert len(get_data)==2
+        
+        not_found_res=client.get(f"{settings.API_V1_STR}/predictions/2")
+        assert not_found_res.status_code==404
+        
+    def test_delete_prediction_not_found(self):
+        """Test deleting non-existent prediction returns 404."""
+        response = client.delete(f"{settings.API_V1_STR}/predictions/99999")
+        assert response.status_code == 404
+
+    def test_delete_prediction_invalid_id(self):
+        """Test invalid ID format returns 422."""
+        response = client.delete(f"{settings.API_V1_STR}/predictions/not-a-number")
+        assert response.status_code == 422

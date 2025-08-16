@@ -147,9 +147,39 @@ async def get_prediction_by_id(id:int, db:Session=Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to retrieve prediction: {str(e)}"
         )
-    
-# @router.delete("/predictions/{id}") 
 
+@router.delete(
+    "/predictions/{pred_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete prediction by ID",
+    description="Delete a specific prediction record by its ID."
+)
+async def delete_prediction_by_id(pred_id: int, db: Session = Depends(get_db)):
+    """Delete a prediction by its specific ID."""
+    try:
+        db_pred = db.query(PredictionRecord).filter(
+            PredictionRecord.id == pred_id
+        ).first()
+        
+        if not db_pred:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Prediction with id {pred_id} not found."
+            )
+            
+        db.delete(db_pred)
+        db.commit()
+        
+        return None
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback() 
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete prediction: {str(e)}"
+        )
 #2
 #Docker Containerization 
 # FROM python:3.13-slim

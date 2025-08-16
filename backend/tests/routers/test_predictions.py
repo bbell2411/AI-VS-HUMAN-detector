@@ -160,4 +160,20 @@ class TestPredictionsRouter:
             
         assert data["text_length"] == len(payload["text"])
 
-                
+    def test_get_prediction_by_id_bad_request(self):
+        """Test for when id is not an integer (validation error)"""
+        response= client.get(f"{settings.API_V1_STR}/predictions/notInt")
+        assert response.status_code==422
+        
+    def test_get_prediction_by_id_not_found(self):
+        """Test for when id does not exist in the database"""
+        response=client.get(f"{settings.API_V1_STR}/predictions/298764")
+        assert response.status_code==404
+        
+    def test_get_prediction_by_id_empty_list(self):
+        """Test for when id exists and returns empty list instead of 404"""
+        
+    def test_get_prediction_by_id_negative_id(self):
+        """Test for negative ID returns 400."""
+        response = client.get(f"{settings.API_V1_STR}/predictions/-1")
+        assert response.status_code == 400

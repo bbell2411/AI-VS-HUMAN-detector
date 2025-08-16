@@ -117,8 +117,14 @@ async def get_predictions(db:Session=Depends(get_db)):
 async def get_prediction_by_id(id:int, db:Session=Depends(get_db)):
     """Get prediction by it's specific ID"""
     try:
+        if id <= 0:
+            raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Prediction ID must be a positive integer"
+        )
+        
         db_pred=db.query(PredictionRecord).filter(
-            id==PredictionRecord.id
+            PredictionRecord.id==id
         ).first()
         
         if not db_pred:
@@ -134,6 +140,8 @@ async def get_prediction_by_id(id:int, db:Session=Depends(get_db)):
             text_length=db_pred.text_length
         )
         return response
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

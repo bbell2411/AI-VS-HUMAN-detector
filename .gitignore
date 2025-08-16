@@ -6,3 +6,8 @@ data/
 .*
 **/__pycache__/
 .*
+_pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python

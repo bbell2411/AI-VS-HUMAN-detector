@@ -19,9 +19,11 @@ test-db:
 dev:
 	uvicorn app.main:app --reload --port 8000
 
+setup-prod-db:
+	set -a; . ./.env.production; set +a; python3 -m app.setup_dbs
 # Install dependencies
 install:
-	pip install -r requirements.txt
+	pip3 install -r requirements.txt
 
 # Clean cache files
 clean:

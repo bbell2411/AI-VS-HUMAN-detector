@@ -1,4 +1,4 @@
-#TextGuardApi
+# TextGuardApi
 
 A machine learning-powered REST API that detects AI-generated text using advanced NLP techniques and FastAPI.
 

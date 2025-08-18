@@ -24,6 +24,12 @@ setup-prod-db:
 # Install dependencies
 install:
 	pip3 install -r requirements.txt
+	
+docker-build:
+	docker build -t ml-detector-api .
+
+docker-run:
+	docker run -p 8000:8000 ml-detector-api
 
 # Clean cache files
 clean:

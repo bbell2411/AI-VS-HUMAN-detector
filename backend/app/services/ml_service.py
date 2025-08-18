@@ -11,13 +11,16 @@ from scipy.sparse import hstack
 class MLService:
     def __init__(self):
         print("Loading your trained model...")
-        path = os.path.join(os.path.dirname(__file__), '..', '..','..', 'models')
-        model_path = os.path.join(os.path.dirname(__file__), '..', '..','..', 'models', 'svm_pca_model.joblib')
+        if os.path.exists('/app/models'):
+            path = '/app/models'
+        else:
+            path = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'models')
+        
         self.vectorizer = joblib.load(os.path.join(path,'vectorizer.joblib'))
         self.imputer = joblib.load(os.path.join(path,"imputer.joblib"))
         self.scaler =  joblib.load(os.path.join(path,'scaler.joblib'))
         self.pca =  joblib.load(os.path.join(path,'pca.joblib'))
-        self.model = joblib.load(model_path)
+        self.model = joblib.load(os.path.join(path,'svm_pca_model.joblib'))
         
         print("ALL Models loaded!")
         

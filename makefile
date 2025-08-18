@@ -12,7 +12,7 @@ install: ## Install dependencies
 	cd backend && pip3 install -r requirements.txt
 
 docker-build: ## Build Docker image
-	docker build -f backend/Dockerfile -t ml-detector-api .
+	docker build -f Dockerfile -t ml-detector-api .
 
 docker-run: ## Run Docker container
 	docker run -p 8000:8000 --env-file backend/.env.production ml-detector-api

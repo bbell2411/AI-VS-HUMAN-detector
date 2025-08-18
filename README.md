@@ -1,6 +1,6 @@
-# AI vs Human Text Detection
+#TextGuardApi
 
-A machine learning project that classifies text as AI-generated or human-written using various ML algorithms and feature engineering techniques.
+A machine learning-powered REST API that detects AI-generated text using advanced NLP techniques and FastAPI.
 
 ## 🎯 Project Overview
 

@@ -180,9 +180,7 @@ async def delete_prediction_by_id(pred_id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to delete prediction: {str(e)}"
         )
-#2
-#Docker Containerization 
-# FROM python:3.13-slim
+
 
        
        

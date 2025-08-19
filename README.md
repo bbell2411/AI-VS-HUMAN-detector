@@ -55,7 +55,7 @@ This project uses the **AI vs Human Content Detection Dataset** from Kaggle, whi
 - **Joblib**: Efficient model serialization
 - **SciPy**: Sparse matrix operations for TF-IDF
   
-### DevOps & Deployment
+### DevOps & Deployment & Testing
 - **Docker**: Container orchestration
 - **Railway/Render**: Cloud hosting platforms
 - **GitHub Actions**: CI/CD pipeline

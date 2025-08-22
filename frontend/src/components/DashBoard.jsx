@@ -1,10 +1,11 @@
 import { useState } from "react"
 import { postPredict } from "../api";
+import { useNavigate } from 'react-router-dom';
 
 export default function DashBoard() {
+    const navigate = useNavigate()
     const [text, setText] = useState("")
     const [contentType, setContentType] = useState("")
-    const [result, setResult] = useState(null)
 
     const [loading, setLoading] = useState(false)
     const [err, setErr] = useState(null)
@@ -14,7 +15,7 @@ export default function DashBoard() {
         setLoading(true)
         postPredict(text, contentType)
             .then((prediction) => {
-                setResult(prediction)
+                navigate('/results', { state: { prediction } })
             })
             .catch((e) => {
                 setErr(true)
@@ -73,14 +74,3 @@ export default function DashBoard() {
         </div>
     )
 }
-// processing_time_ms: 186.01, timestamp: "2025-08-22T16:36:06.695614", text_length: 36 }
-// ​
-// confidence: 0.85
-// ​
-// processing_time_ms: 186.01
-// ​
-// result: "ai_generated"
-// ​
-// text_length: 36
-// ​
-// timestamp: "2025-08-22T16:36:06.695614"

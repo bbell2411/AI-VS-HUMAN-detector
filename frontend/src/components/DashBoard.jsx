@@ -13,8 +13,8 @@ export default function DashBoard() {
         e.preventDefault()
         setLoading(true)
         postPredict(text, contentType)
+        console.log("here")
             .then((prediction) => {
-                setResult(prediction)
             })
             .catch((e) => {
                 setErr(true)

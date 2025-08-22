@@ -13,8 +13,8 @@ export default function DashBoard() {
         e.preventDefault()
         setLoading(true)
         postPredict(text, contentType)
-        console.log("here")
             .then((prediction) => {
+                setResult(prediction)
             })
             .catch((e) => {
                 setErr(true)
@@ -73,3 +73,14 @@ export default function DashBoard() {
         </div>
     )
 }
+// processing_time_ms: 186.01, timestamp: "2025-08-22T16:36:06.695614", text_length: 36 }
+// ​
+// confidence: 0.85
+// ​
+// processing_time_ms: 186.01
+// ​
+// result: "ai_generated"
+// ​
+// text_length: 36
+// ​
+// timestamp: "2025-08-22T16:36:06.695614"

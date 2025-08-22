@@ -7,7 +7,6 @@ const textGuardAPI = axios.create({
 export const postPredict=(text,contentType)=>{
     return textGuardAPI.post("/predictions/",{text, content_type:contentType})
     .then(({data})=>{
-        console.log(data,"innn")
-        // return data
+        return data
     })
 }

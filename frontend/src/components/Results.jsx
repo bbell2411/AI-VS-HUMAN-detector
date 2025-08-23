@@ -11,7 +11,6 @@ export function Results() {
 
     return (
         <div className='result-container'>
-            {/* <img className="logo" src='/textguard.png' /> */}
             <h1 className='results'>Results</h1>
             <div className='results-col'>
             <p>Prediction: {prediction.result}</p>

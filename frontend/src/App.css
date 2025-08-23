@@ -20,19 +20,97 @@
   }
 }
 
-.logo {
-  width: 150px;  
-  height: auto;  
-  margin-bottom: 1.5rem;
-  filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.3));
-  animation: float 3s ease-in-out infinite;
+.Options {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 100; 
 }
 
-
-.logo:hover {
-  /* filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.6)); */
-  transform: scale(1.05);
+.Options img {
+  width: 24px;    
+  height: 24px;
+  filter: invert(1); 
+  opacity: 0.8;
   transition: all 0.3s ease;
+}
+
+.Options img:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  filter: invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+.Options {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.Options:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.Options img {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #1a1a1a;
+  border: 1px solid #f3f2f9;
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  min-width: 150px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 101;
+  animation: fadeIn 0.2s ease;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Overlay to close dropdown */
+.dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99;
+  background: transparent;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .instructions {

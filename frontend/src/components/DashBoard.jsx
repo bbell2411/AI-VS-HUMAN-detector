@@ -45,7 +45,10 @@ export default function DashBoard() {
                 <img src={options} alt="Options" />
                 {isDropdownOpen && (
                     <div className="dropdown-menu">
-                        <a href="#" onClick={closeDropdown}>History</a>
+                        <a href="#" onClick= {()=>{
+                            navigate('/history')
+                            closeDropdown()
+                        }}>History</a>
                         <a href="#" onClick={closeDropdown}>Prediction Model</a>
                     </div>
                 )}

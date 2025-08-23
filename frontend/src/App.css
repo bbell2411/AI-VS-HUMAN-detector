@@ -97,7 +97,7 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Overlay to close dropdown */
+
 .dropdown-overlay {
   position: fixed;
   top: 0;
@@ -291,4 +291,140 @@
     animation: spin 1s linear infinite;
     margin: auto;
     display: block;
+  }
+
+  .history-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+  }
+  
+  .history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .history-header h1 {
+    color: white;
+    font-size: 2.5rem;
+    margin: 0;
+  }
+  
+  .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, #0c04e0 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 50%;  
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    z-index: 100;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .back-button:hover {
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(12, 4, 224, 0.3);
+  }
+  
+  .loading, .error, .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: white;
+    font-size: 1.2rem;
+  }
+  
+  .predictions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .prediction-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #f3f2f9;
+    border-radius: 12px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .prediction-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+  
+  .prediction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .result-badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .confidence {
+    color: #a0a0a0;
+    font-size: 0.9rem;
+  }
+  
+  .prediction-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 0.95rem;
+  }
+  
+  .detail-row span:first-child {
+    color: #a0a0a0;
+  }
+  
+  .detail-row span:last-child {
+    font-weight: 500;
+  }
+  
+  @media (max-width: 768px) {
+    .history-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .predictions-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .prediction-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
   }

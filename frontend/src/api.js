@@ -10,3 +10,10 @@ export const postPredict=(text,contentType)=>{
         return data
     })
 }
+
+export const getAllPredict=()=>{
+    return textGuardAPI.get("/predictions/")
+    .then(({data})=>{
+        return data
+    })
+}

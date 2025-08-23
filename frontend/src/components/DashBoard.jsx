@@ -1,15 +1,24 @@
 import { useState } from "react"
 import { postPredict } from "../api";
 import { useNavigate } from 'react-router-dom';
+import options from "../assets/options.png"
 
 export default function DashBoard() {
     const navigate = useNavigate()
     const [text, setText] = useState("")
     const [contentType, setContentType] = useState("")
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
 
     const [loading, setLoading] = useState(false)
     const [err, setErr] = useState(null)
 
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen)
+    }
+    const closeDropdown = () => {
+        setIsDropdownOpen(false);
+    }
     const handleSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
@@ -32,6 +41,18 @@ export default function DashBoard() {
             <h1 className="Header">
                 TextGuard
             </h1>
+            <div className="Options" onClick={toggleDropdown}>
+                <img src={options} alt="Options" />
+                {isDropdownOpen && (
+                    <div className="dropdown-menu">
+                        <a href="#" onClick={closeDropdown}>History</a>
+                        <a href="#" onClick={closeDropdown}>Prediction Model</a>
+                    </div>
+                )}
+            </div>
+            {isDropdownOpen && (
+                <div className="dropdown-overlay" onClick={closeDropdown}></div>
+            )}
             <div className="container">
                 <div className="instructions">
                     <h3>

@@ -17,3 +17,10 @@ export const getAllPredict=()=>{
         return data
     })
 }
+
+export const deletePred=(id)=>{
+    return textGuardAPI.delete(`/predictions/{id}`)
+    .then(({data})=>{
+        return data
+    })
+}

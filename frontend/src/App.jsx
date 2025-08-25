@@ -5,6 +5,7 @@ import DashBoard from './components/DashBoard'
 import { Results } from './components/Results'
 import { History } from './components/History'
 import { NotFound } from './components/NotFound'
+import { SinglePrediction } from './components/SinglePrediction'
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
         <Route path='/' element={<DashBoard />}></Route>
         <Route path='/results' element={<Results />}></Route>
         <Route path="/history" element={<History />}></Route>
-        <Route path="*" element={<NotFound/>} />
+        <Route path="/history/:prediction_id" element={<SinglePrediction />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
 
